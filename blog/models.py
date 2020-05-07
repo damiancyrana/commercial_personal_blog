@@ -3,9 +3,14 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class PostManager(models.Manager):
+    """Custom QuerySet Manager"""
+    def queryset(self):
+        return super(PostManager, self).queryset().filter(status='published')
+
+
 class Post(models.Model):
     """Basic database model for blog posts"""
-
     CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique_for_date='publish')
@@ -15,6 +20,8 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=CHOICES, default='draft')
+    objects = models.Manager()
+    published = PostManager()
 
     class Meta:
         ordering = ('-publish',)

@@ -11,4 +11,3 @@ class PostAdmin(admin.ModelAdmin):
     raw_id_fields = ('owner',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
-
