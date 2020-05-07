@@ -1,19 +1,36 @@
+{% load tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
-    <div>
-        <h1 class="owner">Damian Cyrana</h1>
-        <p>New technology and beyond</p>
-    </div>
 
-    <div>
-        {% block content %}
-        {% endblock %}
-    </div>
+<body>
+<div>
+    <h1 class="owner">Damian Cyrana</h1>
+    <p>New technology and beyond</p>
+</div>
+
+<div id="sidebar">
+    <h1>Updates</h1>
+    {% show_latest_posts %}
+    <h3>Most commented posts</h3>
+    {% get_most_commented_posts as most_commented_posts %}
+    <ul>
+        {% for post in most_commented_posts %}
+            <li>
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div>
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>
