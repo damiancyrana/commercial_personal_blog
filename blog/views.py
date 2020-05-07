@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
+from django.views.generic import ListView
 
 
-def table_post(request):
+class PostListView(ListView):
     """Displays a posting table"""
-    posts = Post.published.all()
-    context = {'posts': posts}
-    return render(request, 'blog/table_post.html', context)
+    queryset = Post.published.all()
+    context_object_name = 'posts'
+    paginate_by = 6
+    template_name = 'blog/table_post.html'
 
 
 def specific_post(request, year, month, day, post):

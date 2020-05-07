@@ -4,6 +4,6 @@ from . import views
 app_name = 'blog'
 
 urlpatterns = [
-    path('', views.table_post, name='table_post'),
+    path('', views.PostListView.as_view(), name='table_post'),
     path('<int:year>/<int:month>/<int:day>/<slug:post>/', views.specific_post, name='specific_post'),
 ]
