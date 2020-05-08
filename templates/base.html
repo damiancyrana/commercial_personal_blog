@@ -15,6 +15,7 @@
 </div>
 
 <div id="sidebar">
+    <p><a href="{% url 'blog:post_feed'%}">RSS</a></p>
     <h1>Updates</h1>
     {% show_latest_posts %}
     <h3>Most commented posts</h3>
