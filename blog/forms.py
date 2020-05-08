@@ -7,3 +7,8 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('name', 'email', 'text')
+
+
+class SearchForm(forms.Form):
+    """PostgreSQL search view"""
+    query = forms.CharField()
