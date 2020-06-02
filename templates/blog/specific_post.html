@@ -2,39 +2,44 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
-{% block content %}
-    <h1>{{ post.title }}</h1>
-    <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
-    {{ post.text|linebreaks }}
 
-    <h2>Similar posts</h2>
-        {% for post in similar %}
-            <p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
+{% block content %}
+    <main id="content">
+        <nav class="entry-header">
+            <h1>{{ post.title }}</h1>
+            <p class="date">Published {{ post.publish }} by {{ post.author }}</p>
+        </nav>
+
+
+            {{ post.body|linebreaks }}
+
+
+    </main>
+
+    <div class="comment-wrapper">
+        {% with comments.count as total_comments %}
+            <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+        {% endwith %}
+
+        {% for comment in comments %}
+            <div class="comment">
+                <p class="info">Comment {{ forloop.counter }} by {{ comment.name }}{{ comment.created }}</p>
+                {{ comment.text|linebreaks }}
+            </div>
         {% empty %}
-            There are no similar posts yet.
+            <p>There are no comments yet.</p>
         {% endfor %}
 
-    {% with comments.count as total_comments %}
-        <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
-    {% endwith %}
-
-    {% for comment in comments %}
-        <div class="comment">
-            <p class="info">Comment {{ forloop.counter }} by {{ comment.name }}{{ comment.created }}</p>
-            {{ comment.text|linebreaks }}
-        </div>
-    {% empty %}
-        <p>There are no comments yet.</p>
-    {% endfor %}
-
-    {% if new_comment %}
-        <h2>Your comment has been added.</h2>
-    {% else %}
-        <h2>Add a new comment</h2>
-        <form method="post">
-            {{ comment_form.as_p }}
-            {% csrf_token %}
-            <p><input type="submit" value="Add comment"></p>
-        </form>
-    {% endif %}
+        {% if new_comment %}
+            <h2>Your comment has been added.</h2>
+        {% else %}
+            <h2>Add a new comment</h2>
+            <form method="post">
+                {{ comment_form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Add comment"></p>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}
+
